@@ -17,6 +17,13 @@ void rotateMatrix90(int** const arr, short row, short col);
 
 void printMatrix(int** const arr, const short& row, const short& col, const std::string rotation);
 
+int sumTotal(int** const arr, const short& row, const short& col);
+void sumRows(int** const arr, const short& row, const short& col);
+void sumColumns(int** const arr, const short& row, const short& col);
+void sumDiagonal(int** const arr, const short& row, const short& col);
+
+void dataMatrix(int** const arr, const short& row, const short& col, const std::string rotation);
+
 void clearMatrix(int** const arr, const short& row);
 
 int main(void)
@@ -37,6 +44,8 @@ int main(void)
 
 	fillMatrix(matrixR0, sizeRow, sizeCol);
 	printMatrix(matrixR0, sizeRow, sizeCol, "0");
+
+	dataMatrix(matrixR0, sizeRow, sizeCol, "0");
 
 	rotateMatrix90(matrixR0, sizeRow, sizeCol);
 	
@@ -83,10 +92,11 @@ short inputSize(std::string text) {
 };
 
 void fillMatrix(int** const arr, const short& row, const short& col) {
-
+	int i = 1;
 	for (int** iter = arr; iter != arr + row; iter++)
 		for (int* jter = *iter; jter != *iter + col; jter++)
-			*jter = 1 + rand() % 11;
+			//*jter = 1 + rand() % 11;
+			*jter = i++;
 };
 
 void rotateMatrix90(int** const arr, short row, short col) {
@@ -119,6 +129,70 @@ void printMatrix(int** const arr, const short& row, const short& col, const std:
 		for (int* jter = *iter; jter != *iter + col; jter++)
 			cout << *jter << " ";
 		cout << "\n";
+	}
+};
+
+int sumTotal(int** const arr, const short& row, const short& col) {
+	int sum = 0;
+	for (int** iter = arr; iter != arr + row; iter++)
+		for (int* jter = *iter; jter != *iter + col; jter++)
+			sum += *jter;
+
+	return sum;
+};
+
+void sumRows(int** const arr, const short& row, const short& col) {
+
+	for (int** iter = arr, i = 1; iter != arr + row; iter++)
+	{
+		int sumRow = 0;
+		for (int* jter = *iter; jter != *iter + col; jter++) {
+			sumRow += *jter;
+		}
+		cout << "\t\t" << "row" << i++ << " = " << sumRow << "\n";
+	}
+};
+
+void sumColumns(int** const arr, const short& row, const short& col) {
+
+	for (short i = 0; i < col; i++)
+	{
+		int sumCol = 0;
+		for (short j = 0; j < row; j++)
+			sumCol += arr[j][i];
+
+		cout << "\t\t" << "col" << i+1 << " = " << sumCol << "\n";
+	}
+};
+
+void sumDiagonal(int** const arr, const short& row, const short& col) {
+
+	int sumMainD = 0, sumOppositeD = 0;
+
+	for (short i = 0; i < row; i++)
+		for (short j = 0; j < col; j++) {
+			if (i == j)
+				sumMainD += arr[i][j];
+			if ((i + j) == (row - 1))
+				sumOppositeD += arr[i][j];
+		}
+
+	cout << "\t\tmain\t= " << sumMainD << "\n";
+	cout << "\t\toposite\t= " << sumOppositeD << "\n";
+};
+
+void dataMatrix(int** const matrix, const short& row, const short& col, const std::string rotation) {
+
+	cout << "\n\tdata of matrix " << row << " x " << col << ", rotation " + rotation + " clockwise\n";
+
+	cout << "\n\t1. Total = " << sumTotal(matrix, row, col) << "\n";
+	cout << "\n\t2. sum by:\n"; sumRows(matrix, row, col);
+	cout << "\n\t3. sum by:\n"; sumColumns(matrix, row, col);
+
+	if(row == col)
+	{
+		cout << "\n\t4. sum by diagonal:\n";
+		sumDiagonal(matrix, row, col);
 	}
 };
 
