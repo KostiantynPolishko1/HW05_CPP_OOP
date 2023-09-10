@@ -11,6 +11,7 @@ int inputValue(int a);
 short inputSize(std::string text);
 void fillMatrix(int** const arr, const short& row, const short& col);
 void printMatrix(int** const arr, const short& row, const short& col);
+void clearMatrix(int** const arr, const short& row, const short& col);
 
 int main(void)
 {
@@ -33,12 +34,14 @@ int main(void)
 	cout << "\n\tmatrix size " << sizeRow << " x " << sizeCol << "\n\n";
 	printMatrix(arrMatrix, sizeRow, sizeCol);
 
-	for (int** iter = arrMatrix; iter != arrMatrix + sizeRow; iter++) {
+	clearMatrix(arrMatrix, sizeRow, sizeCol);
+
+	/*for (int** iter = arrMatrix; iter != arrMatrix + sizeRow; iter++) {
 		delete[] *iter;
 		*iter = nullptr;
 	}
 	delete[] arrMatrix;
-	arrMatrix = nullptr;
+	arrMatrix = nullptr;*/
 
 	return 0;
 }
@@ -95,4 +98,14 @@ void printMatrix(int** const arr, const short& row, const short& col) {
 			cout << *jter << " ";
 		cout << "\n";
 	}
+};
+
+void clearMatrix(int** arr, const short& row, const short& col) {
+
+	for (int** iter = arr; iter != arr + row; iter++) {
+		delete[] * iter;
+		*iter = nullptr;
+	}
+	delete[] arr;
+	arr = nullptr;
 };
