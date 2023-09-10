@@ -13,9 +13,9 @@ short inputSize(std::string text);
 
 void fillMatrix(int** const arr, const short& row, const short& col);
 
-void rotateMatrix90(int** const arr, const short& row, const short& col);
+void rotateMatrix90(int** const arr, short row, short col);
 
-void printMatrix(int** const arr, const short& row, const short& col);
+void printMatrix(int** const arr, const short& row, const short& col, const std::string rotation);
 
 void clearMatrix(int** const arr, const short& row);
 
@@ -35,28 +35,11 @@ int main(void)
 	for (short i = 0; i < sizeRow; i++)
 		*(matrixR0 + i) = new int[sizeCol];
 
-	cout << "\n\tmatrix " << sizeRow << " x " << sizeCol << ", rotation 0\n\n";
 	fillMatrix(matrixR0, sizeRow, sizeCol);
-	printMatrix(matrixR0, sizeRow, sizeCol);
+	printMatrix(matrixR0, sizeRow, sizeCol, "0");
 
-	std::swap(sizeRow, sizeCol);
-	cout << "\n\tmatrix " << sizeRow << " x " << sizeCol << ", rotation 90 clockwise\n\n";
-
-	int** matrixR90 = new int* [sizeRow];
-	for (int** iter = matrixR90; iter != matrixR90 + sizeRow; iter++)
-		*iter = new int[sizeCol];
-
-	//printMatrix(matrixR90, sizeRow, sizeCol);
-	for (short i = 0; i < sizeRow; i++)
-		for (short j = 0; j < sizeCol; j++)
-			matrixR90[i][j] = matrixR0[(sizeCol - 1) - j][i];
-
-	rotateMatrix90(matrixR90, sizeRow, sizeCol);
-	printMatrix(matrixR90, sizeRow, sizeCol);
+	rotateMatrix90(matrixR0, sizeRow, sizeCol);
 	
-	clearMatrix(matrixR90, sizeRow);
-	
-	std::swap(sizeRow, sizeCol);
 	clearMatrix(matrixR0, sizeRow);
 
 	return 0;
@@ -101,25 +84,35 @@ short inputSize(std::string text) {
 
 void fillMatrix(int** const arr, const short& row, const short& col) {
 
-	int ind = 1;
 	for (int** iter = arr; iter != arr + row; iter++)
 		for (int* jter = *iter; jter != *iter + col; jter++)
-			//*jter = 10 + rand() % 51;
-			*jter = ind++;
+			*jter = 1 + rand() % 11;
 };
 
-void rotateMatrix90(int** const arr, const short& row, const short& col) {
+void rotateMatrix90(int** const arr, short row, short col) {
 
-	int** arrTemp = new int* [row];
-	for (int** iter = arrTemp; iter != arrTemp + row; iter++)
-		*iter = new int [col];
+	std::swap(row, col);
 
-	for (int** iter = arr; iter != arr + row; iter++)
-		for (int* jter = *iter; jter != *iter + col; jter++)
-			;
+	int** matrixR90 = new int* [row];
+	for (int** iter = matrixR90; iter != matrixR90 + row; iter++)
+		*iter = new int[col];
+
+	for (int** iter90 = matrixR90, **iter0 = arr, i = 0; iter90 != matrixR90 + row; iter90++, i++)
+	{
+		for (int* jter90 = *iter90, *jter0 = *iter0, j = 0; jter90 != *iter90 + col; jter90++, j++) {
+			iter0 = arr + ((col - 1) - j);
+			jter0 = *iter0 + i;
+			*jter90 = *jter0;
+		}
+	}
+
+	printMatrix(matrixR90, row, col, "90");
+	clearMatrix(matrixR90, row);
 };
 
-void printMatrix(int** const arr, const short& row, const short& col) {
+void printMatrix(int** const arr, const short& row, const short& col, const std::string rotation) {
+
+	cout << "\n\tmatrix " << row << " x " << col << ", rotation " + rotation + " clockwise\n\n";
 
 	for (int** iter = arr; iter != arr + row; iter++) {
 		cout << "\t";
