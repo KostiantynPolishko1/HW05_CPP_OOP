@@ -1,6 +1,11 @@
 #include <iostream>
 
-int checkV(int a);
+const short	MIN_SIZE = 1;
+const short	MAX_SIZE = 10;
+
+int inputValue(int a);
+
+short inputSize(std::string text);
 
 int main(void)
 {
@@ -8,12 +13,17 @@ int main(void)
 	using std::cin;
     cout << "Start!\n";
 
-	cout << checkV(0) << "\n";
+	short sizeRow = 0, sizeCol = 0;
+	
+	sizeRow = inputSize("rows");
+	sizeCol = inputSize("columns");
+
+	cout << "\n\tmatrix size " << sizeRow << " x " << sizeCol << "\n";
 
 	return 0;
 }
 
-int checkV(int a)
+int inputValue(int a)
 {
 	while (true) // the cycle continues until the user enters the correct value
 	{
@@ -34,3 +44,19 @@ int checkV(int a)
 	}
 
 }
+
+short inputSize(std::string text) {
+
+	while (true) 
+	{
+		short size = 0;
+
+		std::cout << "\tnumber of " + text + " (" << MIN_SIZE << "..." << MAX_SIZE << ")\n";
+		size = inputValue(size);
+		if (size <= 10 && size >= 1)
+			return size;
+
+		system("CLS");
+		std::cout << "\tOUT of RANGE. ERROR!\n";
+	};
+};
