@@ -92,11 +92,10 @@ short inputSize(std::string text) {
 };
 
 void fillMatrix(int** const arr, const short& row, const short& col) {
-	int i = 1;
+
 	for (int** iter = arr; iter != arr + row; iter++)
 		for (int* jter = *iter; jter != *iter + col; jter++)
-			//*jter = 1 + rand() % 11;
-			*jter = i++;
+			*jter = 1 + rand() % 9;
 };
 
 void rotateMatrix90(int** const arr, short row, short col) {
@@ -155,28 +154,32 @@ void sumRows(int** const arr, const short& row, const short& col) {
 
 void sumColumns(int** const arr, const short& row, const short& col) {
 
-	for (short i = 0; i < col; i++)
+	for (int** iter = arr, i = 0; i < col; i++)
 	{
 		int sumCol = 0;
-		for (short j = 0; j < row; j++)
-			sumCol += arr[j][i];
+
+		for (int* jter = *iter, j = 0; j < row; j++)
+			sumCol += *(*(arr + j) + i);
 
 		cout << "\t\t" << "col" << i+1 << " = " << sumCol << "\n";
 	}
+
 };
 
 void sumDiagonal(int** const arr, const short& row, const short& col) {
 
 	int sumMainD = 0, sumOppositeD = 0;
 
-	for (short i = 0; i < row; i++)
-		for (short j = 0; j < col; j++) {
+	for (int** iter = arr, i = 0; i < row; i++)
+		for (int* jter = *iter, j = 0; j < col; j++) 
+		{
 			if (i == j)
-				sumMainD += arr[i][j];
-			if ((i + j) == (row - 1))
-				sumOppositeD += arr[i][j];
-		}
+				sumMainD += *(*(arr + i) + j);
 
+			if ((i + j) == (row - 1))
+				sumOppositeD += *(*(arr + i) + j);
+		}
+	
 	cout << "\t\tmain\t= " << sumMainD << "\n";
 	cout << "\t\toposite\t= " << sumOppositeD << "\n";
 };
